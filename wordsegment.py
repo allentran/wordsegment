@@ -30,6 +30,8 @@ import math
 import os.path as op
 import sys
 
+from functools32 import lru_cache
+
 ALPHABET = set('abcdefghijklmnopqrstuvwxyz0123456789')
 BIGRAMS = None
 DATADIR = op.join(op.dirname(op.realpath(__file__)), 'wordsegment_data')
@@ -60,6 +62,7 @@ def parse_file(filename):
         lines = (line.split('\t') for line in reader)
         return dict((word, float(number)) for word, number in lines)
 
+@lru_cache(maxsize=10000)
 def score(word, prev=None):
     "Score a `word` in the context of the previous word, `prev`."
     if UNIGRAMS is None and BIGRAMS is None:
